@@ -1,0 +1,12 @@
+library(dplyr)
+HPC = read.table('household_power_consumption.txt', sep = ";", header = T, stringsAsFactors = FALSE, col.names = c("Date","Time","Global_active_power","Global_reactive_power","Voltage","Global_intensity","Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+HPC$Date = as.Date(HPC$Date, "%d/%m/%Y")
+HPC_filtered = filter(HPC, Date > "2007-01-31" & Date < "2007-02-03")
+HPC_filtered$Global_active_power = as.numeric(HPC_filtered$Global_active_power)
+datetime = paste(HPC_filtered$Date, HPC_filtered$Time)
+datetime = strptime(datetime, "%Y-%m-%d %H:%M:%S")
+HPC_filtered_datetime <- cbind(datetime, HPC_filtered[,c(-1,-2)])
+png("plot2.png", width = 480, height = 480)
+plot(HPC_filtered_datetime$Global_active_power~HPC_filtered_datetime$datetime,type="l",ylab="Global Active Power(kilowatt)",,xlab ="")
+dev.off()
+

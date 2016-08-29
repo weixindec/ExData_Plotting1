@@ -1,0 +1,8 @@
+library(dplyr)
+HPC = read.table('household_power_consumption.txt', sep = ";", header = T, stringsAsFactors = FALSE, col.names = c("Date","Time","Global_active_power","Global_reactive_power","Voltage","Global_intensity","Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+HPC$Date = as.Date(HPC$Date, "%d/%m/%Y")
+HPC_filtered = filter(HPC, Date > "2007-01-31" & Date < "2007-02-03")
+HPC_filtered$Global_active_power = as.numeric(HPC_filtered$Global_active_power)
+png("plot1.png", width=480, height = 480)
+hist(HPC_filtered$Global_active_power, main = "Global Active Power", xlab = "Global Active Power (kilowatts)", col = "red")
+dev.off()
